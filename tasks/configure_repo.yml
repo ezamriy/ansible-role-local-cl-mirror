@@ -1,0 +1,20 @@
+---
+- name: "Switching {{ repo_item.name }} to {{ local_cl_mirror_host }}"
+  yum_repository:
+    name: "{{ repo_item.name }}"
+    description: "CloudLinux-$releasever - {{ repo_item.component }}"
+    file: cloudlinux
+    baseurl: "{{ local_cl_mirror_proto }}://{{ local_cl_mirror_host }}/cloudlinux/$releasever/{{ repo_item.component }}/$basearch/"
+    enabled: "{{ repo_item.enabled }}"
+    gpgcheck: yes
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CloudLinux
+
+- name: "Switching {{ repo_item.name }}-source to {{ local_cl_mirror_host }}"
+  yum_repository:
+    name: "{{ repo_item.name }}-source"
+    description: "CloudLinux-$releasever - {{ repo_item.component }} sources"
+    file: cloudlinux
+    baseurl: "{{ local_cl_mirror_proto }}://{{ local_cl_mirror_host }}/cloudlinux/$releasever/{{ repo_item.component }}/{{ (ansible_distribution_major_version >= 7) | ternary('Sources', 'SRPMS') }}/"
+    enabled: no
+    gpgcheck: yes
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CloudLinux

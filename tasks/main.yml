@@ -1,0 +1,16 @@
+---
+- name: "Checking that {{ item }} variable is defined"
+  fail: msg="{{ item }} is not defined or empty"
+  when: ({{ item }} is undefined) or ({{ item }} is none) or ({{item | trim }} == '')
+  with_items:
+    - local_cl_mirror_host
+    - local_cl_mirror_proto
+
+- include: configure_repo.yml
+  with_items:
+    - { name: 'cloudlinux-base', component: 'os', enabled: yes }
+    - { name: 'cloudlinux-updates', component: 'updates', enabled: yes }
+    - { name: 'cloudlinux-updates-testing', component: 'updates-testing',
+        enabled: "{{ local_cl_mirror_testing_enabled }}" }
+  loop_control:
+    loop_var: repo_item

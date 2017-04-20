@@ -1,0 +1,4 @@
+---
+local_cl_mirror_host: ''
+local_cl_mirror_proto: 'http'
+local_cl_mirror_testing_enabled: no
